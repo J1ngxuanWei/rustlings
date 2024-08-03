@@ -20,17 +20,28 @@ fn build_scores_table(results: &str) -> HashMap<&str, Team> {
     let mut scores = HashMap::new();
 
     for line in results.lines() {
-        let mut split_iterator = line.split(',');
-        // NOTE: We use `unwrap` because we didn't deal with error handling yet.
-        let team_1_name = split_iterator.next().unwrap();
-        let team_2_name = split_iterator.next().unwrap();
-        let team_1_score: u8 = split_iterator.next().unwrap().parse().unwrap();
-        let team_2_score: u8 = split_iterator.next().unwrap().parse().unwrap();
-
-        // TODO: Populate the scores table with the extracted details.
-        // Keep in mind that goals scored by team 1 will be the number of goals
-        // conceded by team 2. Similarly, goals scored by team 2 will be the
-        // number of goals conceded by team 1.
+        let v: Vec<&str> = r.split(',').collect();
+        let team_1_name = v[0].to_string();
+        let team_1_score: u8 = v[2].parse().unwrap();
+        let team_2_name = v[1].to_string();
+        let team_2_score: u8 = v[3].parse().unwrap();
+        // TODO: Populate the scores table with details extracted from the
+        // current line. Keep in mind that goals scored by team_1
+        // will be the number of goals conceded from team_2, and similarly
+        // goals scored by team_2 will be the number of goals conceded by
+        // team_1.
+        let t=scores.entry(team_1_name.clone()).or_insert(Team {
+            goals_scored: 0,
+            goals_conceded: 0,
+        });
+        t.goals_conceded+=team_2_score;
+        t.goals_scored+=team_1_score;
+        let t=scores.entry(team_2_name.clone()).or_insert(Team {
+            goals_scored: 0,
+            goals_conceded: 0,
+        });
+        t.goals_conceded+=team_1_score;
+        t.goals_scored+=team_2_score;
     }
 
     scores
