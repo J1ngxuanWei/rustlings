@@ -9,16 +9,20 @@ fn byte_counter<T: AsRef<str>>(arg: T) -> usize {
 }
 
 // Obtain the number of characters (not bytes) in the given argument.
-// TODO: Add the AsRef trait appropriately as a trait bound.
+// TODO: Add the `AsRef` trait appropriately as a trait bound.
 fn char_counter<T: AsRef<str>>(arg: T) -> usize {
     arg.as_ref().chars().count()
 }
 
-// Squares a number using as_mut().
+// Squares a number using `as_mut()`.
 // TODO: Add the appropriate trait bound.
-fn num_sq<T>(arg: &mut T) where T: AsMut<u32>{
-    // TODO: Implement the function body.
-    *arg.as_mut()=*arg.as_mut()**arg.as_mut();
+fn num_sq<T: AsMut<u32>>(arg: &mut T) {
+    let value = arg.as_mut();
+    *value = *value * *value;
+}
+
+fn main() {
+    // You can optionally experiment here.
 }
 
 #[cfg(test)]

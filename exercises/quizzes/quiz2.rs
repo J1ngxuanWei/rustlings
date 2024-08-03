@@ -26,24 +26,18 @@ enum Command {
 mod my_module {
     use super::Command;
 
-    // TODO: Complete the function as described above.
+    // TODO: Complete the function.
     // pub fn transformer(input: ???) -> ??? { ??? }
-    pub fn transformer(input: Vec<(&str,Command)>) -> Vec<String> {
-        // TODO: Complete the output declaration!
-        let mut output: Vec<String> = vec![];
-        for (string, command) in input.iter() {
-            // TODO: Complete the function body. You can do it!
-            match command {
-                Command::Uppercase => output.push(string.to_uppercase()),
-                Command::Trim => output.push(string.trim().to_owned()),
-                Command::Append(n) => {
-                    let mut bar = String::new();
-                    for _ in 0..*n {
-                        bar.push_str("bar");
-                    }
-                    output.push((string.to_owned().to_owned() + &bar));
-                }
-            }
+
+    pub fn transformer(input: Vec<(String, Command)>) -> Vec<String> {
+        let mut output: Vec<String> = Vec::new();
+        for (str, cmd) in input {
+            let result = match cmd {
+                Command::Uppercase => str.to_uppercase().clone(),
+                Command::Trim => str.trim().to_string().clone(),
+                Command::Append(n) => str.clone() + &"bar".repeat(n),
+            };
+            output.push(result);
         }
         output
     }
